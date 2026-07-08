@@ -1,34 +1,43 @@
-ఈ
-// Mobile Menu Toggle
-const menuToggle = document.querySelector(".menu-toggle");
-const nav = document.querySelector("nav");
+document.addEventListener("DOMContentLoaded", function () {
 
-if (menuToggle) {
-  menuToggle.addEventListener("click", () => {
-    nav.classList.toggle("active");
+  // Mobile Menu Toggle
+  const menuBtn = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("nav ul");
+
+  if (menuBtn && nav) {
+    menuBtn.addEventListener("click", () => {
+      nav.classList.toggle("active");
+    });
+  }
+
+  // Smooth Scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const target = document.querySelector(this.getAttribute("href"));
+
+      if (target) {
+        target.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+    });
   });
-}
 
-// Smooth Scroll
-document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.addEventListener("click", function (e) {
-    e.preventDefault();
+  // Fade-in Animation
+  const sections = document.querySelectorAll("section");
 
-    const target = document.querySelector(this.getAttribute("href"));
-    if (target) {
-      target.scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-
-    if (nav) {
-      nav.classList.remove("active");
-    }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+      }
+    });
   });
+
+  sections.forEach(section => {
+    observer.observe(section);
+  });
+
 });
-
-// Footer Year
-const year = document.getElementById("year");
-if (year) {
-  year.textContent = new Date().getFullYear();
-}
